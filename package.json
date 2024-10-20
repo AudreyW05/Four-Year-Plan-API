@@ -1,0 +1,54 @@
+{
+  "name": "express-postgres-template",
+  "version": "1.0.0",
+  "description": "Express Postgres API Template",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev src/server.ts",
+    "start": "node build/src/server.js",
+    "build": "tsc",
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "prepare": "npm run compile",
+    "pretest": "npm run compile",
+    "posttest": "npm run lint",
+    "db:create": "sequelize-cli db:create",
+    "db:migrate": "sequelize-cli db:migrate",
+    "db:drop": "sequelize-cli db:drop",
+    "db:migrate:undo": "sequelize-cli db:migrate:undo:all",
+    "db:g:migration": "sequelize-cli migration:generate --name",
+    "db:seed": "sequelize-cli db:seed:all",
+    "db:unseed": "sequelize-cli db:seed:undo:all",
+    "db:reset": "node scripts/resetDb.js && npm run db:seed",
+    "db:reseed": "npm run db:migrate && npm run db:migrate:undo && npm run db:migrate && npm run db:seed"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShenyiCui/express-postgres-template.git"
+  },
+  "author": "Shenyi Cui",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShenyiCui/express-postgres-template/issues"
+  },
+  "homepage": "https://github.com/ShenyiCui/express-postgres-template#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "pg": "^8.9.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.28.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.11.19",
+    "gts": "^3.1.1",
+    "sequelize-cli": "^6.6.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.9.5"
+  }
+}
