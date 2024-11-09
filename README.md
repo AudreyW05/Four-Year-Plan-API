@@ -44,8 +44,8 @@ Follow these steps to set up and run the project locally.
 Clone this repository to your local machine using Git.
 
 ```bash
-git clone git@github.com:ShenyiCui/class-planner-backend.git
-cd class-planner-backend
+git clone https://github.com/AudreyW05/Four-Year-Plan-API
+cd four-year-plan-api
 ```
 
 ### 2. Install Dependencies
