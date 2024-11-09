@@ -17,18 +17,21 @@ async function main() {
   const user1 = await prisma.user.create({
     data: {
       name: 'Alice Johnson',
+      password: 'abc123',
     },
   });
 
   const user2 = await prisma.user.create({
     data: {
       name: 'Bob Smith',
+      password: 'abc123',
     },
   });
 
   const user3 = await prisma.user.create({
     data: {
       name: 'Charlie Brown',
+      password: 'abc123',
     },
   });
 
