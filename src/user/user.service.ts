@@ -61,6 +61,7 @@ export class UserService {
       result.push({
         id: user.id,
         name: user.name,
+        password: user.password,
         courses: courseAnalysis,
       });
     }
@@ -110,6 +111,7 @@ export class UserService {
     return {
       id: user.id,
       name: user.name,
+      password: user.password,
       courses: courseAnalysis,
     };
   }
