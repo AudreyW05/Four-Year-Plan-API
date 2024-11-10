@@ -19,4 +19,14 @@ export class AuthenticationService {
     // instead of the user object
     return result;
   }
+
+  async signUp(): Promise<any> {}
+
+  async confirmEmail(): Promise<any> {}
+
+  async setPassword(): Promise<any> {}
+
+  async resetPassword(): Promise<any> {}
+
+  async forgetPasswordEmail(): Promise<any> {}
 }
