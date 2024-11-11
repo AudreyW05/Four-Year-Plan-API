@@ -16,9 +16,16 @@ import { SignInDto } from './dto/sign-in.dto';
 export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService) {}
 
+  
+
+  //POST login
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInDto: SignInDto) {
     return this.authenticationService.signIn(signInDto.id, signInDto.password);
   }
+
+  //POST signup
+  // @Post('signup')
+  // async signUp(@Body() signupData: )
 }
