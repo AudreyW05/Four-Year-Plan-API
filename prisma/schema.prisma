@@ -15,7 +15,7 @@ datasource db {
 
 model User {
   id    Int     @default(autoincrement()) @id
-  name  String
+  name  String @unique
   password String
 
   Has Has[]

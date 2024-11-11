@@ -116,6 +116,22 @@ export class UserService {
     };
   }
 
+  /**
+   * Find user by email and return their userId.
+   * @param email - The email address to search for.
+   */
+  async findEmail(name: string): Promise<number> {
+    const user = await this.prisma.user.findUnique({
+      where: { name }, // Search by email
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with email ${name} not found`);
+    }
+
+    return user.id; // Assuming `id` is the field for userId
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto) {
     return this.prisma.user.update({
       where: { id },
