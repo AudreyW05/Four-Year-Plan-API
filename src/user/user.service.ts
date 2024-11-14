@@ -69,6 +69,19 @@ export class UserService {
     return result;
   }
 
+   /**
+   * See if user exists by email.
+   * @param name - User email
+   */
+   async findEmail(name: string): Promise<boolean> {
+    const user = await this.prisma.user.findUnique({
+      where: { //if where throws error, its bc findUnique expects int id, so might have to use findFirst method instead
+        name,
+      },
+    });
+    return !!user;
+  }
+
   /**
    * Find one user by ID with course prerequisite analysis.
    * @param id - User ID

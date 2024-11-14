@@ -8,7 +8,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
   imports: [PrismaModule, UserModule, CourseModule, DegreeModule, AuthenticationModule],
-  controllers: [],
+  controllers: [], 
   providers: [],
 })
 export class AppModule {}
