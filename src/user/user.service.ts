@@ -69,6 +69,56 @@ export class UserService {
     return result;
   }
 
+  /**
+   * find user by email.
+   * @param name - User email
+   * returns user
+   */
+  async findUserByEmail(name: string): Promise<UserWithCourseAnalysis> {
+    const user = await this.prisma.user.findUnique({
+      where: { //if where throws error, its bc findUnique expects int id, so might have to use findFirst method instead
+        name},
+        include: { Has: { include: { Course: true } } },
+      
+    });
+
+    if (!user) throw new NotFoundException(`User with ID ${name} not found`);
+
+    const courseCodes = user.Has.map((has) => has.Course.code);
+    const courses = user.Has.map((has) => has.Course);
+    const courseAnalysis: CourseWithPrerequisiteStatus[] = [];
+
+    for (const course of courses) {
+      const prereqs = await this.prisma.preReq.findMany({
+        where: { courseCode: course.code },
+      });
+
+      const prereqCodes = prereqs.map((pr) => pr.preReqCode);
+
+      const hasPrereqs = prereqCodes.every((prCode) =>
+        courseCodes.includes(prCode),
+      );
+
+      const missingPrereqs = prereqCodes.filter(
+        (prCode) => !courseCodes.includes(prCode),
+      );
+
+      courseAnalysis.push({
+        code: course.code,
+        credits: course.credits,
+        prerequisitesFulfilled: hasPrereqs,
+        ...(hasPrereqs ? {} : { missingPrerequisites: missingPrereqs }),
+      });
+    }
+
+    return {
+      id: user.id,
+      name: user.name,
+      password: user.password,
+      courses: courseAnalysis,
+    };
+  }
+
    /**
    * See if user exists by email.
    * @param name - User email

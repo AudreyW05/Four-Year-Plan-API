@@ -4,7 +4,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 import { CourseModule } from './course/course.module';
 import { DegreeModule } from './degree/degree.module';
-import { AuthenticationModule } from './authentication/authentication.module';
+import { AuthenticationModule } from './authentication/authentication.module'; 
 
 @Module({
   imports: [PrismaModule, UserModule, CourseModule, DegreeModule, AuthenticationModule],

@@ -4,6 +4,7 @@ import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { SignupDto } from './dto/sign-up.dto';
 import * as bcrypt from 'bcrypt'; //run npm i bcrypt, npm i @types/bcrypt
+import { v4 as uuidv4 } from 'uuid'; //run npm install uuid
 
 @Injectable()
 export class AuthenticationService {
@@ -11,23 +12,40 @@ export class AuthenticationService {
     private prisma: PrismaService,
     private userService: UserService,
     private jwtService: JwtService
+    
   ) {}
 
-  async signIn(id: number, pass: string): Promise<{ access_token: string}> {
-    const user = await this.userService.findOne(id);
-    if (user?.password !== pass) {
-      throw new UnauthorizedException();
-    }
+  async signIn(name: string, pass: string) {
+
+    const user = await this.userService.findUserByEmail(name);
+
+    //compare pw with existing pw, bcrypt decrypts given password and compares it to pw stored in database
+    const passwordMatch = await bcrypt.compare(pass, user.password)
+    if(!passwordMatch) {
+      throw new UnauthorizedException('Invalid credentials: wrong password');//probably shlould not do this bc hackers can determine what emails exist in db 
+    } 
     //returns a JWT made of user properties and a access_token property.
     const payload = { id: user.id, username: user.name};
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    }
+    const tokens = this.generateUserTokens(payload)
+    return  this.generateUserTokens(payload)
+    // {
+    //   access: (await tokens).accessToken,
+    //   refresh: (await tokens).refreshToken
+    // }
+    
     ;
+  }
+  async generateUserTokens(payload){
+    const accessToken = await this.jwtService.signAsync(payload);
+    
+    return{
+      accessToken,
+      
+    };
   }
 
   async signUp(signupData: SignupDto): Promise<any> {
-    const { id, name, password } = signupData
+    const { name, password } = signupData
     //check if email is in use
     const emailInUse = await this.userService.findEmail(name);//may lead to errors, as findEmail function only needs the email for checking existence, modify your signUp function to pass the email property from the signupData object directly
 
@@ -35,8 +53,8 @@ export class AuthenticationService {
       throw new BadRequestException('Email already in use');
     }
 
-    //hash password
-    const hashedPassword =  await bcrypt.hash(password, 10); //2nd parameter is number of rounds in algorithm to make more secure
+    //hash password 
+    const hashedPassword =  await bcrypt.hash(password, 10); //2nd parameter is number of rounds in algorithm to make more secure, need await bc bcrypt happens asynchronously and may not finish before we create user doc
 
     //create user document and save in database
     await this.userService.create({
