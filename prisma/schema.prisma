@@ -1,59 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 generator client {
   provider = "prisma-client-js"
 }
-
-datasource db {
+@@ -12,51 +6,54 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
   
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  password  String
-  updatedAt DateTime @updatedAt
-  Has       Has[]
+  id    Int     @default(autoincrement()) @id
+  name  String  @unique
+  password String
 
+  Has Has[]
   @@map("users")
 }
 
 model Course {
-  code     String     @id
-  credits  Int
-  Has      Has[]
-  Course   PreReq[]   @relation("course")
-  PreReq   PreReq[]   @relation("prereq")
+  code      String   @id
+  credits   Int
+  Has Has[]
+  
   Requires Requires[]
+  Course PreReq[] @relation(name: "course")
+  PreReq PreReq[] @relation(name: "prereq")
 }
 
 model Has {
-  courseCode String
-  userId     Int
-  Course     Course @relation(fields: [courseCode], references: [code])
-  User       User   @relation(fields: [userId], references: [id])
-
+  courseCode  String 
+  userId      Int     
+  User        User     @relation(fields: [userId], references: [id])
+  Course      Course   @relation(fields: [courseCode], references: [code])
   @@id([courseCode, userId])
 }
 
 model Degree {
-  name     String     @id
+  name   String  @id
   Requires Requires[]
 }
 
 model Requires {
-  degreeName String
-  courseCode String
-  Course     Course @relation(fields: [courseCode], references: [code])
-  Degree     Degree @relation(fields: [degreeName], references: [name])
-
+  degreeName  String
+  courseCode  String
+  Degree      Degree   @relation(fields: [degreeName], references: [name])
+  Course      Course   @relation(fields: [courseCode], references: [code])
   @@id([degreeName, courseCode])
 }
 
 model PreReq {
-  courseCode String
-  preReqCode String
-  Course     Course @relation("course", fields: [courseCode], references: [code])
-  PreReq     Course @relation("prereq", fields: [preReqCode], references: [code])
-
+  courseCode  String
+  preReqCode  String
+  Course      Course   @relation(name: "course", fields: [courseCode], references: [code])
+  PreReq      Course   @relation(name: "prereq", fields: [preReqCode], references: [code])
   @@id([courseCode, preReqCode])
 }
