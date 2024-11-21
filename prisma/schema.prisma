@@ -1,29 +1,29 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
-@@ -12,51 +6,54 @@ datasource db {
+
+datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-  
+
 model User {
   id    Int     @default(autoincrement()) @id
-  name  String  @unique
+  name  String
   password String
-
   Has Has[]
-  @@map("users")
 }
 
 model Course {
   code      String   @id
   credits   Int
   Has Has[]
-  
   Requires Requires[]
   Course PreReq[] @relation(name: "course")
   PreReq PreReq[] @relation(name: "prereq")
