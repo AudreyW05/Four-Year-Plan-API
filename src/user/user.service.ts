@@ -20,6 +20,10 @@ export class UserService {
     });
   }
 
+  async getSelf(user): Promise<any> {
+    return this.findOne(user.id);
+  }
+
   /**
    * Find all users with course prerequisite analysis.
    */
@@ -119,7 +123,7 @@ export class UserService {
     };
   }
 
-   /**
+  /**
    * See if user exists by email.
    * @param email - User email
    */

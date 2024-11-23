@@ -6,8 +6,12 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Enable CORS for specific domains
-  app.enableCors();
+  // Allow all CORS
+  app.enableCors({
+    origin: '*', // Allow all origins
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allow all HTTP methods
+    allowedHeaders: '*', // Allow all headers
+  });
 
   app.useGlobalFilters(new PrismaExceptionFilter());
   app.useGlobalPipes(
