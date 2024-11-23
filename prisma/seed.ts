@@ -16,21 +16,21 @@ async function main() {
   // Create Users
   const user1 = await prisma.user.create({
     data: {
-      name: 'Alice Johnson',
+      email: 'Alice Johnson',
       password: 'abc123',
     },
   });
 
   const user2 = await prisma.user.create({
     data: {
-      name: 'Bob Smith',
+      email: 'Bob Smith',
       password: 'abc123',
     },
   });
 
   const user3 = await prisma.user.create({
     data: {
-      name: 'Charlie Brown',
+      email: 'Charlie Brown',
       password: 'abc123',
     },
   });

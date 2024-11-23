@@ -15,9 +15,9 @@ export class AuthenticationService {
     
   ) {}
 
-  async signIn(name: string, pass: string) {
+  async signIn(email: string, pass: string) {
 
-    const user = await this.userService.findUserByEmail(name);
+    const user = await this.userService.findUserByEmail(email);
 
     //compare pw with existing pw, bcrypt decrypts given password and compares it to pw stored in database
     const passwordMatch = await bcrypt.compare(pass, user.password)
@@ -25,7 +25,7 @@ export class AuthenticationService {
       throw new UnauthorizedException('Invalid credentials: wrong password');//probably shlould not do this bc hackers can determine what emails exist in db 
     } 
     //returns a JWT made of user properties and a access_token property.
-    const payload = { id: user.id, username: user.name};
+    const payload = { id: user.id, username: user.email};
     const tokens = this.generateUserTokens(payload)
     return  this.generateUserTokens(payload)
     // {
@@ -45,9 +45,9 @@ export class AuthenticationService {
   }
 
   async signUp(signupData: SignupDto): Promise<any> {
-    const { name, password } = signupData
+    const { email, password } = signupData
     //check if email is in use
-    const emailInUse = await this.userService.findEmail(name);//may lead to errors, as findEmail function only needs the email for checking existence, modify your signUp function to pass the email property from the signupData object directly
+    const emailInUse = await this.userService.findEmail(email);//may lead to errors, as findEmail function only needs the email for checking existence, modify your signUp function to pass the email property from the signupData object directly
 
     if (emailInUse){
       throw new BadRequestException('Email already in use');
@@ -58,7 +58,7 @@ export class AuthenticationService {
 
     //create user document and save in database
     await this.userService.create({
-      name,//no id bc in user/dto/create-user.dto.ts, id is not defined as a parameter
+      email,//no id bc in user/dto/create-user.dto.ts, id is not defined as a parameter
       password: hashedPassword,
     });
   }
