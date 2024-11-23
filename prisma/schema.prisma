@@ -14,15 +14,17 @@ datasource db {
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  name  String  @unique
-  password String
+  id        Int     @default(autoincrement()) @id
+  email     String  @unique
+  password  String
+
   Has Has[]
 }
 
 model Course {
   code      String   @id
   credits   Int
+
   Has Has[]
   Requires Requires[]
   Course PreReq[] @relation(name: "course")
@@ -31,7 +33,8 @@ model Course {
 
 model Has {
   courseCode  String 
-  userId      Int     
+  userId      Int 
+
   User        User     @relation(fields: [userId], references: [id])
   Course      Course   @relation(fields: [courseCode], references: [code])
   @@id([courseCode, userId])
@@ -39,12 +42,14 @@ model Has {
 
 model Degree {
   name   String  @id
+
   Requires Requires[]
 }
 
 model Requires {
   degreeName  String
   courseCode  String
+
   Degree      Degree   @relation(fields: [degreeName], references: [name])
   Course      Course   @relation(fields: [courseCode], references: [code])
   @@id([degreeName, courseCode])
@@ -53,6 +58,7 @@ model Requires {
 model PreReq {
   courseCode  String
   preReqCode  String
+
   Course      Course   @relation(name: "course", fields: [courseCode], references: [code])
   PreReq      Course   @relation(name: "prereq", fields: [preReqCode], references: [code])
   @@id([courseCode, preReqCode])

@@ -9,7 +9,7 @@ export interface CourseWithPrerequisiteStatus {
 
 export interface UserWithCourseAnalysis {
   id: number;
-  name: string;
+  email: string;
   password: string;
   courses: CourseWithPrerequisiteStatus[];
 }

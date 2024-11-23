@@ -26,7 +26,7 @@ export class AuthenticationController {
   @HttpCode(HttpStatus.OK)
   @Post('signin')
   signIn(@Body() signInDto: SignInDto) {
-    return this.authenticationService.signIn(signInDto.name, signInDto.password);
+    return this.authenticationService.signIn(signInDto.email, signInDto.password);
   } 
 
   //JWT authguard route protection, probably not needed as we wont be retrieving profile this way

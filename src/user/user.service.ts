@@ -60,7 +60,7 @@ export class UserService {
 
       result.push({
         id: user.id,
-        name: user.name,
+        email: user.email,
         password: user.password,
         courses: courseAnalysis,
       });
@@ -71,18 +71,18 @@ export class UserService {
 
   /**
    * find user by email.
-   * @param name - User email
+   * @param email - User email
    * returns user
    */
-  async findUserByEmail(name: string): Promise<UserWithCourseAnalysis> {
+  async findUserByEmail(email: string): Promise<UserWithCourseAnalysis> {
     const user = await this.prisma.user.findUnique({
       where: { //if where throws error, its bc findUnique expects int id, so might have to use findFirst method instead
-        name},
+        email},
         include: { Has: { include: { Course: true } } },
       
     });
 
-    if (!user) throw new NotFoundException(`User with ID ${name} not found`);
+    if (!user) throw new NotFoundException(`User with ID ${email} not found`);
 
     const courseCodes = user.Has.map((has) => has.Course.code);
     const courses = user.Has.map((has) => has.Course);
@@ -113,7 +113,7 @@ export class UserService {
 
     return {
       id: user.id,
-      name: user.name,
+      email: user.email,
       password: user.password,
       courses: courseAnalysis,
     };
@@ -121,12 +121,12 @@ export class UserService {
 
    /**
    * See if user exists by email.
-   * @param name - User email
+   * @param email - User email
    */
-   async findEmail(name: string): Promise<boolean> {
+   async findEmail(email: string): Promise<boolean> {
     const user = await this.prisma.user.findUnique({
       where: { //if where throws error, its bc findUnique expects int id, so might have to use findFirst method instead
-        name,
+        email,
       },
     });
     return !!user;
@@ -173,7 +173,7 @@ export class UserService {
 
     return {
       id: user.id,
-      name: user.name,
+      email: user.email,
       password: user.password,
       courses: courseAnalysis,
     };
