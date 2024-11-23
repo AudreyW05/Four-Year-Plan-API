@@ -20,6 +20,10 @@ export class UserService {
     });
   }
 
+  async getSelf(user): Promise<any> {
+    return this.findOne(user.id);
+  }
+
   /**
    * Find all users with course prerequisite analysis.
    */
@@ -76,10 +80,11 @@ export class UserService {
    */
   async findUserByEmail(name: string): Promise<UserWithCourseAnalysis> {
     const user = await this.prisma.user.findUnique({
-      where: { //if where throws error, its bc findUnique expects int id, so might have to use findFirst method instead
-        name},
-        include: { Has: { include: { Course: true } } },
-      
+      where: {
+        //if where throws error, its bc findUnique expects int id, so might have to use findFirst method instead
+        name,
+      },
+      include: { Has: { include: { Course: true } } },
     });
 
     if (!user) throw new NotFoundException(`User with ID ${name} not found`);
@@ -119,13 +124,14 @@ export class UserService {
     };
   }
 
-   /**
+  /**
    * See if user exists by email.
    * @param name - User email
    */
-   async findEmail(name: string): Promise<boolean> {
+  async findEmail(name: string): Promise<boolean> {
     const user = await this.prisma.user.findUnique({
-      where: { //if where throws error, its bc findUnique expects int id, so might have to use findFirst method instead
+      where: {
+        //if where throws error, its bc findUnique expects int id, so might have to use findFirst method instead
         name,
       },
     });

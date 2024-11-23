@@ -9,12 +9,15 @@ import {
   Put,
   Delete,
   ParseIntPipe,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AddCourseDto } from './dto/add-course.dto';
 import { UserWithCourseAnalysis } from './user.interface';
+import { AuthGuard } from '../authentication/authentication.guard';
 
 @Controller('users')
 export class UserController {
@@ -41,6 +44,16 @@ export class UserController {
   /**
    * Get all users with course prerequisite analysis.
    */
+  @UseGuards(AuthGuard)
+  @Get('getSelf')
+  getSelf(@Request() req): Promise<UserWithCourseAnalysis[]> {
+    return this.userService.getSelf(req.user);
+  }
+
+  /**
+   * Get all users with course prerequisite analysis.
+   */
+  @UseGuards(AuthGuard)
   @Get()
   findAll(): Promise<UserWithCourseAnalysis[]> {
     return this.userService.findAll();
@@ -50,6 +63,7 @@ export class UserController {
    * Get a single user by ID with course prerequisite analysis.
    * @param id - User ID
    */
+  @UseGuards(AuthGuard)
   @Get(':id')
   findOne(
     @Param('id', ParseIntPipe) id: number,
@@ -57,6 +71,7 @@ export class UserController {
     return this.userService.findOne(id);
   }
 
+  @UseGuards(AuthGuard)
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -65,6 +80,7 @@ export class UserController {
     return this.userService.update(id, updateUserDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.userService.remove(id);
