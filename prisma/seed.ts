@@ -42,35 +42,24 @@ async function main() {
   const course1 = await prisma.course.create({
     data: {
       code: 'CS101',
-      credits: 3,
+      units: 3,
+      category: 'Computer Science',
     },
   });
 
   const course2 = await prisma.course.create({
     data: {
       code: 'CS102',
-      credits: 4,
+      units: 4,
+      category: 'Computer Science',
     },
   });
 
   const course3 = await prisma.course.create({
     data: {
       code: 'MATH101',
-      credits: 3,
-    },
-  });
-
-  const course4 = await prisma.course.create({
-    data: {
-      code: 'ENG101',
-      credits: 2,
-    },
-  });
-
-  const course5 = await prisma.course.create({
-    data: {
-      code: 'PHYS101',
-      credits: 4,
+      units: 3,
+      category: 'Computer Science',
     },
   });
 
@@ -94,46 +83,6 @@ async function main() {
     },
   });
 
-  // Set up Degree Requirements (Requires)
-  await prisma.requires.createMany({
-    data: [
-      {
-        degreeName: degree1.name,
-        courseCode: course1.code, // CS101
-      },
-      {
-        degreeName: degree1.name,
-        courseCode: course2.code, // CS102
-      },
-      {
-        degreeName: degree1.name,
-        courseCode: course3.code, // MATH101
-      },
-      {
-        degreeName: degree2.name,
-        courseCode: course3.code, // MATH101
-      },
-      {
-        degreeName: degree2.name,
-        courseCode: course5.code, // PHYS101
-      },
-    ],
-  });
-
-  // Set up Course Prerequisites (PreReq)
-  await prisma.preReq.createMany({
-    data: [
-      {
-        courseCode: course2.code, // CS102
-        preReqCode: course1.code, // CS101
-      },
-      {
-        courseCode: course5.code, // PHYS101
-        preReqCode: course3.code, // MATH101
-      },
-    ],
-  });
-
   // Assign Courses to Users (Has)
   await prisma.has.createMany({
     data: [
@@ -148,10 +97,6 @@ async function main() {
       {
         courseCode: course2.code, // CS102
         userId: user2.id,
-      },
-      {
-        courseCode: course4.code, // ENG101
-        userId: user3.id,
       },
     ],
   });
