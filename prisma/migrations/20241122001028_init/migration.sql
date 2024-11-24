@@ -14,3 +14,7 @@ ALTER TABLE "User" RENAME COLUMN "name" TO "email";
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+
+-- AddColumn
+ALTER TABLE "User" ADD COLUMN "units" INTEGER DEFAULT 0;

@@ -11,5 +11,6 @@ export interface UserWithCourseAnalysis {
   id: number;
   email: string;
   password: string;
+  units: number;
   courses: CourseWithPrerequisiteStatus[];
 }

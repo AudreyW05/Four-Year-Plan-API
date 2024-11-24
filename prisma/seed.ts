@@ -18,6 +18,7 @@ async function main() {
     data: {
       email: 'Alice Johnson',
       password: 'abc123',
+      units: 0,
     },
   });
 
@@ -25,6 +26,7 @@ async function main() {
     data: {
       email: 'Bob Smith',
       password: 'abc123',
+      units: 0,
     },
   });
 
@@ -32,6 +34,7 @@ async function main() {
     data: {
       email: 'Charlie Brown',
       password: 'abc123',
+      units: 0,
     },
   });
 

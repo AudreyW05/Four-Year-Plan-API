@@ -16,7 +16,7 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     return this.prisma.user.create({
-      data: createUserDto,
+      data: { ...createUserDto, units: 0 },
     });
   }
 
@@ -66,6 +66,7 @@ export class UserService {
         id: user.id,
         email: user.email,
         password: user.password,
+        units: user.units,
         courses: courseAnalysis,
       });
     }
@@ -80,10 +81,11 @@ export class UserService {
    */
   async findUserByEmail(email: string): Promise<UserWithCourseAnalysis> {
     const user = await this.prisma.user.findUnique({
-      where: { //if where throws error, its bc findUnique expects int id, so might have to use findFirst method instead
-        email},
-        include: { Has: { include: { Course: true } } },
-      
+      where: {
+        //if where throws error, its bc findUnique expects int id, so might have to use findFirst method instead
+        email,
+      },
+      include: { Has: { include: { Course: true } } },
     });
 
     if (!user) throw new NotFoundException(`User with ID ${email} not found`);
@@ -119,6 +121,7 @@ export class UserService {
       id: user.id,
       email: user.email,
       password: user.password,
+      units: user.units,
       courses: courseAnalysis,
     };
   }
@@ -127,9 +130,10 @@ export class UserService {
    * See if user exists by email.
    * @param email - User email
    */
-   async findEmail(email: string): Promise<boolean> {
+  async findEmail(email: string): Promise<boolean> {
     const user = await this.prisma.user.findUnique({
-      where: { //if where throws error, its bc findUnique expects int id, so might have to use findFirst method instead
+      where: {
+        //if where throws error, its bc findUnique expects int id, so might have to use findFirst method instead
         email,
       },
     });
@@ -179,6 +183,7 @@ export class UserService {
       id: user.id,
       email: user.email,
       password: user.password,
+      units: user.units,
       courses: courseAnalysis,
     };
   }
