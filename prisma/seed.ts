@@ -16,22 +16,22 @@ async function main() {
   // Create Users
   const user1 = await prisma.user.create({
     data: {
-      email: 'Alice Johnson',
+      email: 'alicejohnson@gmail.com',
       password: 'abc123',
     },
   });
 
   const user2 = await prisma.user.create({
     data: {
-      email: 'Bob Smith',
-      password: 'abc123',
+      email: 'bobsmith@gmail.com',
+      password: 'def456',
     },
   });
 
   const user3 = await prisma.user.create({
     data: {
-      email: 'Charlie Brown',
-      password: 'abc123',
+      email: 'charliebrown@gmail.com',
+      password: 'ghi789',
     },
   });
 
@@ -70,6 +70,13 @@ async function main() {
       credits: 4,
     },
   });
+
+  const course6 = await prisma.course.create({
+    data: {
+      code: 'CS 180',
+      credits: 4,
+    }
+  })
 
   // Create Degrees
   const degree1 = await prisma.degree.create({

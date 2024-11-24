@@ -242,4 +242,49 @@ export class UserService {
 
     return addedCourse;
   }
+
+  /**
+   * Delete a course to a user without checking prerequisites.
+   * @param userId - User ID
+   * @param courseCode - Course Code to add
+   */
+  async deleteCourseToUser(userId: number, courseCode: string) {
+    // Check if user exists
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if(!user) throw new NotFoundException(`User with ID ${userId} not found`);
+
+    // Check if course exists
+    const course = await this.prisma.course.findUnique({
+      where: { code: courseCode },
+    });
+
+    if (!course) throw new NotFoundException(`Course with code ${courseCode} not found`);
+
+    // Check if user already has the course
+    const existingHas = await this.prisma.has.findUnique({
+      where: {
+        courseCode_userId: {
+          courseCode,
+          userId,
+        },
+      },
+    });
+    
+    if (!existingHas) throw new NotFoundException(`User does not have course ${courseCode}`);
+
+    // Delete the course from the user
+    const deletedCourse = await this.prisma.has.delete({
+      where: {
+        courseCode_userId: {
+          courseCode,
+          userId,
+        },
+      },
+    });
+
+    return deletedCourse;
+  }
 }
