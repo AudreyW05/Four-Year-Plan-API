@@ -18,6 +18,7 @@ async function main() {
     data: {
       email: 'alicejohnson@gmail.com',
       password: 'abc123',
+      units: 0,
     },
   });
 
@@ -25,6 +26,7 @@ async function main() {
     data: {
       email: 'bobsmith@gmail.com',
       password: 'def456',
+      units: 0,
     },
   });
 
@@ -32,6 +34,7 @@ async function main() {
     data: {
       email: 'charliebrown@gmail.com',
       password: 'ghi789',
+      units: 0,
     },
   });
 
