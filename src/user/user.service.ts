@@ -56,7 +56,8 @@ export class UserService {
 
         courseAnalysis.push({
           code: course.code,
-          credits: course.credits,
+          units: course.units,
+          category: course.category,
           prerequisitesFulfilled: hasPrereqs,
           ...(hasPrereqs ? {} : { missingPrerequisites: missingPrereqs }),
         });
@@ -111,7 +112,8 @@ export class UserService {
 
       courseAnalysis.push({
         code: course.code,
-        credits: course.credits,
+        units: course.units,
+        category: course.category,
         prerequisitesFulfilled: hasPrereqs,
         ...(hasPrereqs ? {} : { missingPrerequisites: missingPrereqs }),
       });
@@ -173,7 +175,8 @@ export class UserService {
 
       courseAnalysis.push({
         code: course.code,
-        credits: course.credits,
+        units: course.units,
+        category: course.category,
         prerequisitesFulfilled: hasPrereqs,
         ...(hasPrereqs ? {} : { missingPrerequisites: missingPrereqs }),
       });

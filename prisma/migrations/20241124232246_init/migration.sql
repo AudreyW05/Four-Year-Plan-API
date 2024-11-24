@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Course" ALTER COLUMN "category" DROP DEFAULT,
+ALTER COLUMN "category" SET DATA TYPE TEXT;

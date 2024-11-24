@@ -2,7 +2,8 @@
 
 export interface CourseWithPrerequisiteStatus {
   code: string;
-  credits: number;
+  units: number;
+  category: string;
   prerequisitesFulfilled: boolean;
   missingPrerequisites?: string[];
 }

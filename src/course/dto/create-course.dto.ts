@@ -7,5 +7,8 @@ export class CreateCourseDto {
   code: string;
 
   @IsInt()
-  credits: number;
+  units: number;
+
+  @IsString()
+  category: string;
 }

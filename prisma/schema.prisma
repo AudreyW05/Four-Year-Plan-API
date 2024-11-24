@@ -24,7 +24,8 @@ model User {
 
 model Course {
   code      String   @id
-  credits   Int
+  units     Int
+  category  String
 
   Has Has[]
   Requires Requires[]
