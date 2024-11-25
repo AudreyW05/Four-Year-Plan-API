@@ -36,6 +36,7 @@ model Course {
 model Has {
   courseCode  String 
   userId      Int 
+  yearQuarter Int
 
   User        User     @relation(fields: [userId], references: [id])
   Course      Course   @relation(fields: [courseCode], references: [code])

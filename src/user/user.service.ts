@@ -39,7 +39,10 @@ export class UserService {
       const courses = user.Has.map((has) => has.Course);
       const courseAnalysis: CourseWithPrerequisiteStatus[] = [];
 
-      for (const course of courses) {
+      for (const has of user.Has) {
+        const course = has.Course
+        const yearQuarter = has.yearQuarter
+
         const prereqs = await this.prisma.preReq.findMany({
           where: { courseCode: course.code },
         });
@@ -68,6 +71,7 @@ export class UserService {
           code: course.code,
           units: course.units,
           category: course.category,
+          yearQuarter: yearQuarter,
           prerequisitesFulfilled: hasPrereqs,
           ...(hasPrereqs
             ? {}
@@ -110,7 +114,10 @@ export class UserService {
     const courses = user.Has.map((has) => has.Course);
     const courseAnalysis: CourseWithPrerequisiteStatus[] = [];
 
-    for (const course of courses) {
+    for (const has of user.Has) {
+      const course = has.Course;
+      const yearQuarter = has.yearQuarter
+
       const prereqs = await this.prisma.preReq.findMany({
         where: { courseCode: course.code },
       });
@@ -129,6 +136,7 @@ export class UserService {
         code: course.code,
         units: course.units,
         category: course.category,
+        yearQuarter: yearQuarter,
         prerequisitesFulfilled: hasPrereqs,
         ...(hasPrereqs ? {} : { missingPrerequisites: missingPrereqs }),
       });
@@ -173,7 +181,10 @@ export class UserService {
     const courses = user.Has.map((has) => has.Course);
     const courseAnalysis: CourseWithPrerequisiteStatus[] = [];
 
-    for (const course of courses) {
+    for (const has of user.Has) {
+      const course = has.Course;
+      const yearQuarter = has.yearQuarter;
+
       const prereqs = await this.prisma.preReq.findMany({
         where: { courseCode: course.code },
       });
@@ -192,6 +203,7 @@ export class UserService {
         code: course.code,
         units: course.units,
         category: course.category,
+        yearQuarter: yearQuarter,
         prerequisitesFulfilled: hasPrereqs,
         ...(hasPrereqs ? {} : { missingPrerequisites: missingPrereqs }),
       });
@@ -224,7 +236,7 @@ export class UserService {
    * @param userId - User ID
    * @param courseCode - Course Code to add
    */
-  async addCourseToUser(userId: number, courseCode: string) {
+  async addCourseToUser(userId: number, courseCode: string, year: number, quarter: number) {
     // Check if user exists
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
@@ -255,11 +267,15 @@ export class UserService {
       throw new NotFoundException(`User already has course ${courseCode}`);
     }
 
+    const yearQuarterStr = year.toString() + quarter.toString();
+    const yearQuarter = Number(yearQuarterStr)
+
     // Add the course to the user
     const addedCourse = await this.prisma.has.create({
       data: {
         courseCode,
         userId,
+        yearQuarter,
       },
     });
 
