@@ -66,7 +66,8 @@ async function main() {
   const course6 = await prisma.course.create({
     data: {
       code: 'CS 180',
-      credits: 4,
+      units: 4,
+      category: 'Computer Science'
     }
   })
 
@@ -89,14 +90,17 @@ async function main() {
       {
         courseCode: course1.code, // CS101
         userId: user1.id,
+        yearQuarter: 11
       },
       {
         courseCode: course3.code, // MATH101
         userId: user1.id,
+        yearQuarter: 12
       },
       {
         courseCode: course2.code, // CS102
         userId: user2.id,
+        yearQuarter: 11
       },
     ],
   });
