@@ -66,9 +66,10 @@ async function main() {
   const course6 = await prisma.course.create({
     data: {
       code: 'CS 180',
-      credits: 4,
-    }
-  })
+      units: 4,
+      category: 'Computer Science',
+    },
+  });
 
   // Create Degrees
   const degree1 = await prisma.degree.create({

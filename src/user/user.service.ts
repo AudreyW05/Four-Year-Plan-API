@@ -54,12 +54,27 @@ export class UserService {
           (prCode) => !courseCodes.includes(prCode),
         );
 
+        const missingEnforcedPrereqs = prereqs.filter((pr) => {
+          missingPrereqs.some((missing) => pr.preReqCode.includes(missing)),
+            pr.enforced === true;
+        });
+
+        const missingWarningPrereqs = prereqs.filter((pr) => {
+          missingPrereqs.some((missing) => pr.preReqCode.includes(missing)),
+            pr.enforced === false;
+        });
+
         courseAnalysis.push({
           code: course.code,
           units: course.units,
           category: course.category,
           prerequisitesFulfilled: hasPrereqs,
-          ...(hasPrereqs ? {} : { missingPrerequisites: missingPrereqs }),
+          ...(hasPrereqs
+            ? {}
+            : {
+                missingEnforcedPrereqs: missingEnforcedPrereqs,
+                missingWarningPrereqs: missingWarningPrereqs,
+              }),
         });
       }
 
@@ -262,14 +277,15 @@ export class UserService {
       where: { id: userId },
     });
 
-    if(!user) throw new NotFoundException(`User with ID ${userId} not found`);
+    if (!user) throw new NotFoundException(`User with ID ${userId} not found`);
 
     // Check if course exists
     const course = await this.prisma.course.findUnique({
       where: { code: courseCode },
     });
 
-    if (!course) throw new NotFoundException(`Course with code ${courseCode} not found`);
+    if (!course)
+      throw new NotFoundException(`Course with code ${courseCode} not found`);
 
     // Check if user already has the course
     const existingHas = await this.prisma.has.findUnique({
@@ -280,8 +296,9 @@ export class UserService {
         },
       },
     });
-    
-    if (!existingHas) throw new NotFoundException(`User does not have course ${courseCode}`);
+
+    if (!existingHas)
+      throw new NotFoundException(`User does not have course ${courseCode}`);
 
     // Delete the course from the user
     const deletedCourse = await this.prisma.has.delete({
