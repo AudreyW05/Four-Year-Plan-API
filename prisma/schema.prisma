@@ -61,6 +61,7 @@ model Requires {
 model PreReq {
   courseCode  String
   preReqCode  String
+  enforced    Boolean
 
   Course      Course   @relation(name: "course", fields: [courseCode], references: [code])
   PreReq      Course   @relation(name: "prereq", fields: [preReqCode], references: [code])

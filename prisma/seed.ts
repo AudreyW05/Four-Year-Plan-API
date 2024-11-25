@@ -67,9 +67,9 @@ async function main() {
     data: {
       code: 'CS 180',
       units: 4,
-      category: 'Computer Science'
-    }
-  })
+      category: 'Computer Science',
+    },
+  });
 
   // Create Degrees
   const degree1 = await prisma.degree.create({
@@ -90,17 +90,17 @@ async function main() {
       {
         courseCode: course1.code, // CS101
         userId: user1.id,
-        yearQuarter: 11
+        yearQuarter: 11,
       },
       {
         courseCode: course3.code, // MATH101
         userId: user1.id,
-        yearQuarter: 12
+        yearQuarter: 12,
       },
       {
         courseCode: course2.code, // CS102
         userId: user2.id,
-        yearQuarter: 11
+        yearQuarter: 11,
       },
     ],
   });

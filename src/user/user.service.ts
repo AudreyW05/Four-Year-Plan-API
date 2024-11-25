@@ -14,6 +14,53 @@ import {
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
+  async analyzeCoursePrereqs(user, course, yearQuarter) {
+    const prevCourses = user.Has.filter((has) => yearQuarter > has.yearQuarter);
+    const prevCoursesCodes = prevCourses.map((course) => course.courseCode);
+
+    const prereqs = await this.prisma.preReq.findMany({
+      where: { courseCode: course.code },
+    });
+
+    const prereqCodes = prereqs.map((pr) => pr.preReqCode);
+
+    const hasPrereqs = prereqCodes.every((prCode) =>
+      prevCoursesCodes.includes(prCode),
+    );
+
+    const missingPrereqs = prereqCodes.filter(
+      (prCode) => !prevCoursesCodes.includes(prCode),
+    );
+
+    const missingEnforcedPrereqs = prereqs.filter((pr) => {
+      return (
+        missingPrereqs.some((missing) => pr.preReqCode.includes(missing)) &&
+        pr.enforced === true
+      );
+    });
+
+    const missingWarningPrereqs = prereqs.filter((pr) => {
+      return (
+        missingPrereqs.some((missing) => pr.preReqCode.includes(missing)) &&
+        pr.enforced === false
+      );
+    });
+
+    return {
+      code: course.code,
+      units: course.units,
+      category: course.category,
+      yearQuarter: yearQuarter,
+      prerequisitesFulfilled: hasPrereqs,
+      ...(hasPrereqs
+        ? {}
+        : {
+            missingEnforcedPrereqs: missingEnforcedPrereqs,
+            missingWarningPrereqs: missingWarningPrereqs,
+          }),
+    };
+  }
+
   async create(createUserDto: CreateUserDto) {
     return this.prisma.user.create({
       data: { ...createUserDto, units: 0 },
@@ -35,36 +82,17 @@ export class UserService {
     const result: UserWithCourseAnalysis[] = [];
 
     for (const user of users) {
-      const courseCodes = user.Has.map((has) => has.Course.code);
-      const courses = user.Has.map((has) => has.Course);
       const courseAnalysis: CourseWithPrerequisiteStatus[] = [];
 
       for (const has of user.Has) {
-        const course = has.Course
-        const yearQuarter = has.yearQuarter
-
-        const prereqs = await this.prisma.preReq.findMany({
-          where: { courseCode: course.code },
-        });
-
-        const prereqCodes = prereqs.map((pr) => pr.preReqCode);
-
-        const hasPrereqs = prereqCodes.every((prCode) =>
-          courseCodes.includes(prCode),
+        const course = has.Course;
+        const yearQuarter = has.yearQuarter;
+        const courseAnalysisData = await this.analyzeCoursePrereqs(
+          user,
+          course,
+          yearQuarter,
         );
-
-        const missingPrereqs = prereqCodes.filter(
-          (prCode) => !courseCodes.includes(prCode),
-        );
-
-        courseAnalysis.push({
-          code: course.code,
-          units: course.units,
-          category: course.category,
-          yearQuarter: yearQuarter,
-          prerequisitesFulfilled: hasPrereqs,
-          ...(hasPrereqs ? {} : { missingPrerequisites: missingPrereqs }),
-        });
+        courseAnalysis.push(courseAnalysisData);
       }
 
       result.push({
@@ -101,30 +129,8 @@ export class UserService {
 
     for (const has of user.Has) {
       const course = has.Course;
-      const yearQuarter = has.yearQuarter
-
-      const prereqs = await this.prisma.preReq.findMany({
-        where: { courseCode: course.code },
-      });
-
-      const prereqCodes = prereqs.map((pr) => pr.preReqCode);
-
-      const hasPrereqs = prereqCodes.every((prCode) =>
-        courseCodes.includes(prCode),
-      );
-
-      const missingPrereqs = prereqCodes.filter(
-        (prCode) => !courseCodes.includes(prCode),
-      );
-
-      courseAnalysis.push({
-        code: course.code,
-        units: course.units,
-        category: course.category,
-        yearQuarter: yearQuarter,
-        prerequisitesFulfilled: hasPrereqs,
-        ...(hasPrereqs ? {} : { missingPrerequisites: missingPrereqs }),
-      });
+      const yearQuarter = has.yearQuarter;
+      this.analyzeCoursePrereqs(user, course, yearQuarter);
     }
 
     return {
@@ -170,28 +176,7 @@ export class UserService {
       const course = has.Course;
       const yearQuarter = has.yearQuarter;
 
-      const prereqs = await this.prisma.preReq.findMany({
-        where: { courseCode: course.code },
-      });
-
-      const prereqCodes = prereqs.map((pr) => pr.preReqCode);
-
-      const hasPrereqs = prereqCodes.every((prCode) =>
-        courseCodes.includes(prCode),
-      );
-
-      const missingPrereqs = prereqCodes.filter(
-        (prCode) => !courseCodes.includes(prCode),
-      );
-
-      courseAnalysis.push({
-        code: course.code,
-        units: course.units,
-        category: course.category,
-        yearQuarter: yearQuarter,
-        prerequisitesFulfilled: hasPrereqs,
-        ...(hasPrereqs ? {} : { missingPrerequisites: missingPrereqs }),
-      });
+      this.analyzeCoursePrereqs(user, course, yearQuarter);
     }
 
     return {
@@ -221,7 +206,12 @@ export class UserService {
    * @param userId - User ID
    * @param courseCode - Course Code to add
    */
-  async addCourseToUser(userId: number, courseCode: string, year: number, quarter: number) {
+  async addCourseToUser(
+    userId: number,
+    courseCode: string,
+    year: number,
+    quarter: number,
+  ) {
     // Check if user exists
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
@@ -253,7 +243,7 @@ export class UserService {
     }
 
     const yearQuarterStr = year.toString() + quarter.toString();
-    const yearQuarter = Number(yearQuarterStr)
+    const yearQuarter = Number(yearQuarterStr);
 
     // Add the course to the user
     const addedCourse = await this.prisma.has.create({
@@ -278,14 +268,15 @@ export class UserService {
       where: { id: userId },
     });
 
-    if(!user) throw new NotFoundException(`User with ID ${userId} not found`);
+    if (!user) throw new NotFoundException(`User with ID ${userId} not found`);
 
     // Check if course exists
     const course = await this.prisma.course.findUnique({
       where: { code: courseCode },
     });
 
-    if (!course) throw new NotFoundException(`Course with code ${courseCode} not found`);
+    if (!course)
+      throw new NotFoundException(`Course with code ${courseCode} not found`);
 
     // Check if user already has the course
     const existingHas = await this.prisma.has.findUnique({
@@ -296,8 +287,9 @@ export class UserService {
         },
       },
     });
-    
-    if (!existingHas) throw new NotFoundException(`User does not have course ${courseCode}`);
+
+    if (!existingHas)
+      throw new NotFoundException(`User does not have course ${courseCode}`);
 
     // Delete the course from the user
     const deletedCourse = await this.prisma.has.delete({
