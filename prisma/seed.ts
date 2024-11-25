@@ -43,7 +43,7 @@ async function main() {
     data: {
       code: 'CS 1',
       units: 1,
-      category: 'lowerdivs'
+      category: 'lowerdivs',
     },
   });
 
@@ -51,7 +51,7 @@ async function main() {
     data: {
       code: 'CS 31',
       units: 4,
-      category: 'lowerdivs'
+      category: 'lowerdivs',
     },
   });
 
@@ -59,15 +59,15 @@ async function main() {
     data: {
       code: 'CS 32',
       units: 4,
-      category: 'lowerdivs'
+      category: 'lowerdivs',
     },
   });
 
-  const course6 = await prisma.course.create({
+  const course4 = await prisma.course.create({
     data: {
       code: 'CS 33',
       units: 5,
-      category: 'lowerdivs'
+      category: 'lowerdivs',
     },
   });
 
@@ -75,7 +75,7 @@ async function main() {
     data: {
       code: 'CS 35L',
       units: 4,
-      category: 'lowerdivs'
+      category: 'lowerdivs',
     },
   });
 
@@ -83,7 +83,7 @@ async function main() {
     data: {
       code: 'ECE 3',
       units: 4,
-      category: 'lowerdivs'
+      category: 'lowerdivs',
     },
   });
 
@@ -91,7 +91,7 @@ async function main() {
     data: {
       code: 'MATH 31A',
       units: 4,
-      category: 'math'
+      category: 'math',
     },
   });
 
@@ -99,7 +99,7 @@ async function main() {
     data: {
       code: 'MATH 31B',
       units: 4,
-      category: 'math'
+      category: 'math',
     },
   });
 
@@ -107,7 +107,7 @@ async function main() {
     data: {
       code: 'MATH 32A',
       units: 4,
-      category: 'math'
+      category: 'math',
     },
   });
 
@@ -115,7 +115,7 @@ async function main() {
     data: {
       code: 'MATH 32B',
       units: 4,
-      category: 'math'
+      category: 'math',
     },
   });
 
@@ -123,7 +123,7 @@ async function main() {
     data: {
       code: 'MATH 33A',
       units: 4,
-      category: 'math'
+      category: 'math',
     },
   });
 
@@ -131,7 +131,7 @@ async function main() {
     data: {
       code: 'MATH 33B',
       units: 4,
-      category: 'math'
+      category: 'math',
     },
   });
 
@@ -139,7 +139,7 @@ async function main() {
     data: {
       code: 'MATH 61',
       units: 4,
-      category: 'math'
+      category: 'math',
     },
   });
 
@@ -147,7 +147,7 @@ async function main() {
     data: {
       code: 'PHYSICS 1A',
       units: 5,
-      category: 'physics'
+      category: 'physics',
     },
   });
 
@@ -155,7 +155,7 @@ async function main() {
     data: {
       code: 'PHYSICS 1B',
       units: 5,
-      category: 'physics'
+      category: 'physics',
     },
   });
 
@@ -163,7 +163,7 @@ async function main() {
     data: {
       code: 'PHYSICS 1C',
       units: 5,
-      category: 'physics'
+      category: 'physics',
     },
   });
 
@@ -171,7 +171,7 @@ async function main() {
     data: {
       code: 'CS M51A / ECE M116',
       units: 4,
-      category: 'lowerdivs'
+      category: 'lowerdivs',
     },
   });
 
@@ -179,7 +179,7 @@ async function main() {
     data: {
       code: 'Physics Lab',
       units: 2,
-      category: 'physics'
+      category: 'physics',
     },
   });
 
@@ -187,7 +187,7 @@ async function main() {
     data: {
       code: 'CS 111',
       units: 5,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
 
@@ -195,7 +195,7 @@ async function main() {
     data: {
       code: 'CS 118',
       units: 4,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
 
@@ -203,7 +203,7 @@ async function main() {
     data: {
       code: 'CS 131',
       units: 4,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
 
@@ -211,7 +211,7 @@ async function main() {
     data: {
       code: 'CS 180',
       units: 4,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
 
@@ -219,7 +219,7 @@ async function main() {
     data: {
       code: 'CS 181',
       units: 4,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
 
@@ -227,7 +227,7 @@ async function main() {
     data: {
       code: 'ECE 100',
       units: 4,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
 
@@ -235,7 +235,7 @@ async function main() {
     data: {
       code: 'ECE 102',
       units: 4,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
 
@@ -243,7 +243,7 @@ async function main() {
     data: {
       code: 'CS 115C',
       units: 4,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
 
@@ -251,7 +251,7 @@ async function main() {
     data: {
       code: 'CS M151B / ECE M116C',
       units: 4,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
 
@@ -259,7 +259,7 @@ async function main() {
     data: {
       code: 'CS M152A / ECE M116L',
       units: 2,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
 
@@ -267,7 +267,7 @@ async function main() {
     data: {
       code: 'Probability',
       units: 4,
-      category: 'math'
+      category: 'math',
     },
   });
 
@@ -275,7 +275,7 @@ async function main() {
     data: {
       code: 'Capstone SWE/Design',
       units: 4,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
 
@@ -283,35 +283,35 @@ async function main() {
     data: {
       code: 'CS Elective 1',
       units: 4,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
   const course32 = await prisma.course.create({
     data: {
       code: 'CS Elective 2',
       units: 4,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
   const course33 = await prisma.course.create({
     data: {
       code: 'CS Elective 3',
       units: 4,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
   const course34 = await prisma.course.create({
     data: {
       code: 'CS Elective 4',
       units: 4,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
   const course35 = await prisma.course.create({
     data: {
       code: 'CS Elective 5',
       units: 4,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
 
@@ -319,7 +319,7 @@ async function main() {
     data: {
       code: 'ECE Elective 1',
       units: 4,
-      category: 'upperdivs'
+      category: 'upperdivs',
     },
   });
 
@@ -327,7 +327,7 @@ async function main() {
     data: {
       code: 'SciTech 1',
       units: 4,
-      category: 'others'
+      category: 'others',
     },
   });
 
@@ -335,7 +335,7 @@ async function main() {
     data: {
       code: 'SciTech 2',
       units: 4,
-      category: 'others'
+      category: 'others',
     },
   });
 
@@ -343,7 +343,7 @@ async function main() {
     data: {
       code: 'SciTech 3',
       units: 4,
-      category: 'others'
+      category: 'others',
     },
   });
 
@@ -351,7 +351,7 @@ async function main() {
     data: {
       code: 'Tech Breadth 1',
       units: 4,
-      category: 'others'
+      category: 'others',
     },
   });
 
@@ -359,7 +359,7 @@ async function main() {
     data: {
       code: 'Tech Breadth 2',
       units: 4,
-      category: 'others'
+      category: 'others',
     },
   });
 
@@ -367,7 +367,7 @@ async function main() {
     data: {
       code: 'Tech Breadth 3',
       units: 4,
-      category: 'others'
+      category: 'others',
     },
   });
 
@@ -375,7 +375,7 @@ async function main() {
     data: {
       code: 'Writing 1',
       units: 5,
-      category: 'ges'
+      category: 'ges',
     },
   });
 
@@ -383,7 +383,7 @@ async function main() {
     data: {
       code: 'Engr Writing/Ethics',
       units: 5,
-      category: 'ges'
+      category: 'ges',
     },
   });
 
@@ -391,7 +391,7 @@ async function main() {
     data: {
       code: 'Literary/Cultural Analysis',
       units: 5,
-      category: 'ges'
+      category: 'ges',
     },
   });
 
@@ -399,7 +399,7 @@ async function main() {
     data: {
       code: 'Philos/Ling Analysis',
       units: 5,
-      category: 'ges'
+      category: 'ges',
     },
   });
 
@@ -407,7 +407,7 @@ async function main() {
     data: {
       code: 'VAPA',
       units: 5,
-      category: 'ges'
+      category: 'ges',
     },
   });
 
@@ -415,7 +415,7 @@ async function main() {
     data: {
       code: 'Historical Analysis',
       units: 5,
-      category: 'ges'
+      category: 'ges',
     },
   });
 
@@ -423,7 +423,7 @@ async function main() {
     data: {
       code: 'Social Analysis',
       units: 5,
-      category: 'ges'
+      category: 'ges',
     },
   });
 
@@ -431,7 +431,7 @@ async function main() {
     data: {
       code: 'Life Science',
       units: 5,
-      category: 'ges'
+      category: 'ges',
     },
   });
 
@@ -561,19 +561,19 @@ async function main() {
       },
       {
         degreeName: degree1.name,
-        courseCode: course32.code, 
+        courseCode: course32.code,
       },
       {
         degreeName: degree1.name,
-        courseCode: course33.code, 
+        courseCode: course33.code,
       },
       {
         degreeName: degree1.name,
-        courseCode: course34.code, 
+        courseCode: course34.code,
       },
       {
         degreeName: degree1.name,
-        courseCode: course35.code, 
+        courseCode: course35.code,
       },
       {
         degreeName: degree1.name,
@@ -759,11 +759,11 @@ async function main() {
       },
       {
         degreeName: degree2.name,
-        courseCode: course32.code, 
+        courseCode: course32.code,
       },
       {
         degreeName: degree2.name,
-        courseCode: course33.code, 
+        courseCode: course33.code,
       },
       {
         degreeName: degree2.name, // DIFF
@@ -822,217 +822,217 @@ async function main() {
       {
         courseCode: course3.code, // CS 32
         preReqCode: course2.code, // 31
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course4.code, // 33
         preReqCode: course3.code, // 32
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course5.code, // 35l
         preReqCode: course2.code, // 31
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course8.code, // 31b
         preReqCode: course7.code, // 31a
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course9.code, // 32a
         preReqCode: course7.code, // 31a
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course10.code, // 32b
         preReqCode: course8.code, // 31b
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course10.code, // 32b
         preReqCode: course9.code, // 32a
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course11.code, // 33a
         preReqCode: course8.code, // 31b
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course11.code, // 33a
         preReqCode: course9.code, // 32a
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course12.code, // 33b
         preReqCode: course8.code, // 31b
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course13.code, // 61
         preReqCode: course7.code, // 31a
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course13.code, // 61
         preReqCode: course8.code, // 31b
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course14.code, // 1a
         preReqCode: course7.code, // 31a
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course14.code, // 1a
         preReqCode: course8.code, // 31b
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course15.code, // 1b
         preReqCode: course9.code, // 32a
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course15.code, // 1b
         preReqCode: course14.code, // 1a
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course16.code, // 1c
         preReqCode: course15.code, // 1b
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course16.code, // 1c
         preReqCode: course10.code, // 32b
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course18.code, // 4al
         preReqCode: course14.code, // 1a
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course19.code, // 111
         preReqCode: course3.code, // cs32
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course19.code, // 111
         preReqCode: course4.code, // cs33
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course19.code, // 111
         preReqCode: course5.code, // 35l
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course20.code, // 118
         preReqCode: course19.code, // 111
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course21.code, // 131
         preReqCode: course4.code, // 33
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course21.code, // 131
         preReqCode: course5.code, // 35l
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course22.code, // 180
         preReqCode: course3.code, // 32
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course22.code, // 180
         preReqCode: course13.code, // math 61
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course23.code, // 181
         preReqCode: course21.code, // 180
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course24.code, // ece100
         preReqCode: course16.code, // 1c
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course24.code, // ece100
         preReqCode: course11.code, // 33a
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course24.code, // ece100
         preReqCode: course12.code, // 33b
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course25.code, // ece102
         preReqCode: course11.code, // 33a
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course25.code, // ece102
         preReqCode: course12.code, // 33b
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course26.code, // ece115c
         preReqCode: course24.code, // ece100
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course26.code, // ece115c
         preReqCode: course17.code, // m51a
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course27.code, // m151b/116c
         preReqCode: course4.code, // 33
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course27.code, // m151b/116c
         preReqCode: course17.code, // m51a
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course28.code, // m152a/116l
         preReqCode: course17.code, // m51a
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course29.code, // prob
         preReqCode: course10.code, // 32b
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course30.code, // capstone
         preReqCode: course4.code, // 33
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course30.code, // capstone
         preReqCode: course17.code, // m51a
-        enforced: true
+        enforced: true,
       },
       {
         courseCode: course30.code, // capstone
         preReqCode: course19.code, // 111
-        enforced: false
+        enforced: false,
       },
       {
         courseCode: course30.code, // capstone
         preReqCode: course21.code, // 131
-        enforced: false
+        enforced: false,
       },
     ],
   });
