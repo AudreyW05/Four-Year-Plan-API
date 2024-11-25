@@ -14,9 +14,56 @@ import {
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
+  async analyzeCoursePrereqs(user, course, yearQuarter) {
+    const prevCourses = user.Has.filter((has) => yearQuarter > has.yearQuarter);
+    const prevCoursesCodes = prevCourses.map((course) => course.courseCode);
+
+    const prereqs = await this.prisma.preReq.findMany({
+      where: { courseCode: course.code },
+    });
+
+    const prereqCodes = prereqs.map((pr) => pr.preReqCode);
+
+    const hasPrereqs = prereqCodes.every((prCode) =>
+      prevCoursesCodes.includes(prCode),
+    );
+
+    const missingPrereqs = prereqCodes.filter(
+      (prCode) => !prevCoursesCodes.includes(prCode),
+    );
+
+    const missingEnforcedPrereqs = prereqs.filter((pr) => {
+      return (
+        missingPrereqs.some((missing) => pr.preReqCode.includes(missing)) &&
+        pr.enforced === true
+      );
+    });
+
+    const missingWarningPrereqs = prereqs.filter((pr) => {
+      return (
+        missingPrereqs.some((missing) => pr.preReqCode.includes(missing)) &&
+        pr.enforced === false
+      );
+    });
+
+    return {
+      code: course.code,
+      units: course.units,
+      category: course.category,
+      yearQuarter: yearQuarter,
+      prerequisitesFulfilled: hasPrereqs,
+      ...(hasPrereqs
+        ? {}
+        : {
+            missingEnforcedPrereqs: missingEnforcedPrereqs,
+            missingWarningPrereqs: missingWarningPrereqs,
+          }),
+    };
+  }
+
   async create(createUserDto: CreateUserDto) {
     return this.prisma.user.create({
-      data: createUserDto,
+      data: { ...createUserDto, units: 0 },
     });
   }
 
@@ -35,37 +82,24 @@ export class UserService {
     const result: UserWithCourseAnalysis[] = [];
 
     for (const user of users) {
-      const courseCodes = user.Has.map((has) => has.Course.code);
-      const courses = user.Has.map((has) => has.Course);
       const courseAnalysis: CourseWithPrerequisiteStatus[] = [];
 
-      for (const course of courses) {
-        const prereqs = await this.prisma.preReq.findMany({
-          where: { courseCode: course.code },
-        });
-
-        const prereqCodes = prereqs.map((pr) => pr.preReqCode);
-
-        const hasPrereqs = prereqCodes.every((prCode) =>
-          courseCodes.includes(prCode),
+      for (const has of user.Has) {
+        const course = has.Course;
+        const yearQuarter = has.yearQuarter;
+        const courseAnalysisData = await this.analyzeCoursePrereqs(
+          user,
+          course,
+          yearQuarter,
         );
-
-        const missingPrereqs = prereqCodes.filter(
-          (prCode) => !courseCodes.includes(prCode),
-        );
-
-        courseAnalysis.push({
-          code: course.code,
-          credits: course.credits,
-          prerequisitesFulfilled: hasPrereqs,
-          ...(hasPrereqs ? {} : { missingPrerequisites: missingPrereqs }),
-        });
+        courseAnalysis.push(courseAnalysisData);
       }
 
       result.push({
         id: user.id,
         email: user.email,
         password: user.password,
+        units: user.units,
         courses: courseAnalysis,
       });
     }
@@ -80,10 +114,11 @@ export class UserService {
    */
   async findUserByEmail(email: string): Promise<UserWithCourseAnalysis> {
     const user = await this.prisma.user.findUnique({
-      where: { //if where throws error, its bc findUnique expects int id, so might have to use findFirst method instead
-        email},
-        include: { Has: { include: { Course: true } } },
-      
+      where: {
+        //if where throws error, its bc findUnique expects int id, so might have to use findFirst method instead
+        email,
+      },
+      include: { Has: { include: { Course: true } } },
     });
 
     if (!user) throw new NotFoundException(`User with ID ${email} not found`);
@@ -92,33 +127,17 @@ export class UserService {
     const courses = user.Has.map((has) => has.Course);
     const courseAnalysis: CourseWithPrerequisiteStatus[] = [];
 
-    for (const course of courses) {
-      const prereqs = await this.prisma.preReq.findMany({
-        where: { courseCode: course.code },
-      });
-
-      const prereqCodes = prereqs.map((pr) => pr.preReqCode);
-
-      const hasPrereqs = prereqCodes.every((prCode) =>
-        courseCodes.includes(prCode),
-      );
-
-      const missingPrereqs = prereqCodes.filter(
-        (prCode) => !courseCodes.includes(prCode),
-      );
-
-      courseAnalysis.push({
-        code: course.code,
-        credits: course.credits,
-        prerequisitesFulfilled: hasPrereqs,
-        ...(hasPrereqs ? {} : { missingPrerequisites: missingPrereqs }),
-      });
+    for (const has of user.Has) {
+      const course = has.Course;
+      const yearQuarter = has.yearQuarter;
+      this.analyzeCoursePrereqs(user, course, yearQuarter);
     }
 
     return {
       id: user.id,
       email: user.email,
       password: user.password,
+      units: user.units,
       courses: courseAnalysis,
     };
   }
@@ -127,9 +146,10 @@ export class UserService {
    * See if user exists by email.
    * @param email - User email
    */
-   async findEmail(email: string): Promise<boolean> {
+  async findEmail(email: string): Promise<boolean> {
     const user = await this.prisma.user.findUnique({
-      where: { //if where throws error, its bc findUnique expects int id, so might have to use findFirst method instead
+      where: {
+        //if where throws error, its bc findUnique expects int id, so might have to use findFirst method instead
         email,
       },
     });
@@ -152,33 +172,18 @@ export class UserService {
     const courses = user.Has.map((has) => has.Course);
     const courseAnalysis: CourseWithPrerequisiteStatus[] = [];
 
-    for (const course of courses) {
-      const prereqs = await this.prisma.preReq.findMany({
-        where: { courseCode: course.code },
-      });
+    for (const has of user.Has) {
+      const course = has.Course;
+      const yearQuarter = has.yearQuarter;
 
-      const prereqCodes = prereqs.map((pr) => pr.preReqCode);
-
-      const hasPrereqs = prereqCodes.every((prCode) =>
-        courseCodes.includes(prCode),
-      );
-
-      const missingPrereqs = prereqCodes.filter(
-        (prCode) => !courseCodes.includes(prCode),
-      );
-
-      courseAnalysis.push({
-        code: course.code,
-        credits: course.credits,
-        prerequisitesFulfilled: hasPrereqs,
-        ...(hasPrereqs ? {} : { missingPrerequisites: missingPrereqs }),
-      });
+      this.analyzeCoursePrereqs(user, course, yearQuarter);
     }
 
     return {
       id: user.id,
       email: user.email,
       password: user.password,
+      units: user.units,
       courses: courseAnalysis,
     };
   }
@@ -201,7 +206,12 @@ export class UserService {
    * @param userId - User ID
    * @param courseCode - Course Code to add
    */
-  async addCourseToUser(userId: number, courseCode: string) {
+  async addCourseToUser(
+    userId: number,
+    courseCode: string,
+    year: number,
+    quarter: number,
+  ) {
     // Check if user exists
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
@@ -232,14 +242,65 @@ export class UserService {
       throw new NotFoundException(`User already has course ${courseCode}`);
     }
 
+    const yearQuarterStr = year.toString() + quarter.toString();
+    const yearQuarter = Number(yearQuarterStr);
+
     // Add the course to the user
     const addedCourse = await this.prisma.has.create({
       data: {
         courseCode,
         userId,
+        yearQuarter,
       },
     });
 
     return addedCourse;
+  }
+
+  /**
+   * Delete a course to a user without checking prerequisites.
+   * @param userId - User ID
+   * @param courseCode - Course Code to add
+   */
+  async deleteCourseToUser(userId: number, courseCode: string) {
+    // Check if user exists
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) throw new NotFoundException(`User with ID ${userId} not found`);
+
+    // Check if course exists
+    const course = await this.prisma.course.findUnique({
+      where: { code: courseCode },
+    });
+
+    if (!course)
+      throw new NotFoundException(`Course with code ${courseCode} not found`);
+
+    // Check if user already has the course
+    const existingHas = await this.prisma.has.findUnique({
+      where: {
+        courseCode_userId: {
+          courseCode,
+          userId,
+        },
+      },
+    });
+
+    if (!existingHas)
+      throw new NotFoundException(`User does not have course ${courseCode}`);
+
+    // Delete the course from the user
+    const deletedCourse = await this.prisma.has.delete({
+      where: {
+        courseCode_userId: {
+          courseCode,
+          userId,
+        },
+      },
+    });
+
+    return deletedCourse;
   }
 }

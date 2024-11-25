@@ -16,22 +16,25 @@ async function main() {
   // Create Users
   const user1 = await prisma.user.create({
     data: {
-      email: 'Alice Johnson',
+      email: 'alicejohnson@gmail.com',
       password: 'abc123',
+      units: 0,
     },
   });
 
   const user2 = await prisma.user.create({
     data: {
-      email: 'Bob Smith',
-      password: 'abc123',
+      email: 'bobsmith@gmail.com',
+      password: 'def456',
+      units: 0,
     },
   });
 
   const user3 = await prisma.user.create({
     data: {
-      email: 'Charlie Brown',
-      password: 'abc123',
+      email: 'charliebrown@gmail.com',
+      password: 'ghi789',
+      units: 0,
     },
   });
 
@@ -60,7 +63,7 @@ async function main() {
     },
   });
 
-  const course4 = await prisma.course.create({
+  const course6 = await prisma.course.create({
     data: {
       code: 'CS 33',
       units: 5,
@@ -1040,18 +1043,17 @@ async function main() {
       {
         courseCode: course1.code, // CS101
         userId: user1.id,
+        yearQuarter: 11,
       },
       {
         courseCode: course3.code, // MATH101
         userId: user1.id,
+        yearQuarter: 12,
       },
       {
         courseCode: course2.code, // CS102
         userId: user2.id,
-      },
-      {
-        courseCode: course4.code, // ENG101
-        userId: user3.id,
+        yearQuarter: 11,
       },
     ],
   });

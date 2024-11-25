@@ -16,6 +16,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AddCourseDto } from './dto/add-course.dto';
+import { DeleteCourseDto } from './dto/delete-course.dto';
 import { UserWithCourseAnalysis } from './user.interface';
 import { AuthGuard } from '../authentication/authentication.guard';
 
@@ -38,7 +39,20 @@ export class UserController {
     @Param('id', ParseIntPipe) id: number,
     @Body() addCourseDto: AddCourseDto,
   ) {
-    return this.userService.addCourseToUser(id, addCourseDto.courseCode);
+    return this.userService.addCourseToUser(id, addCourseDto.courseCode, addCourseDto.year, addCourseDto.quarter);
+  }
+
+  /**
+   * Delete a course to a specific user without checking prequisites
+   * @param id - User ID
+   * @param addCourseDto - Course code to add
+   */
+  @Delete(':id/delete-course')
+  deleteCourseToUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() deleteCourseDto: DeleteCourseDto,
+  ) {
+    return this.userService.deleteCourseToUser(id, deleteCourseDto.courseCode);
   }
 
   /**
