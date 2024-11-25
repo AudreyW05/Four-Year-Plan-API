@@ -4,6 +4,7 @@ export interface CourseWithPrerequisiteStatus {
   code: string;
   units: number;
   category: string;
+  yearQuarter: number;
   prerequisitesFulfilled: boolean;
   missingPrerequisites?: string[];
 }

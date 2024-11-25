@@ -39,7 +39,7 @@ export class UserController {
     @Param('id', ParseIntPipe) id: number,
     @Body() addCourseDto: AddCourseDto,
   ) {
-    return this.userService.addCourseToUser(id, addCourseDto.courseCode);
+    return this.userService.addCourseToUser(id, addCourseDto.courseCode, addCourseDto.year, addCourseDto.quarter);
   }
 
   /**
