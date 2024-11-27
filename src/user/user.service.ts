@@ -123,14 +123,17 @@ export class UserService {
 
     if (!user) throw new NotFoundException(`User with ID ${email} not found`);
 
-    const courseCodes = user.Has.map((has) => has.Course.code);
-    const courses = user.Has.map((has) => has.Course);
     const courseAnalysis: CourseWithPrerequisiteStatus[] = [];
 
     for (const has of user.Has) {
       const course = has.Course;
       const yearQuarter = has.yearQuarter;
-      this.analyzeCoursePrereqs(user, course, yearQuarter);
+      const courseAnalysisData = await this.analyzeCoursePrereqs(
+        user,
+        course,
+        yearQuarter,
+      );
+      courseAnalysis.push(courseAnalysisData);
     }
 
     return {
@@ -168,15 +171,18 @@ export class UserService {
 
     if (!user) throw new NotFoundException(`User with ID ${id} not found`);
 
-    const courseCodes = user.Has.map((has) => has.Course.code);
-    const courses = user.Has.map((has) => has.Course);
     const courseAnalysis: CourseWithPrerequisiteStatus[] = [];
 
     for (const has of user.Has) {
       const course = has.Course;
       const yearQuarter = has.yearQuarter;
 
-      this.analyzeCoursePrereqs(user, course, yearQuarter);
+      const courseAnalysisData = await this.analyzeCoursePrereqs(
+        user,
+        course,
+        yearQuarter,
+      );
+      courseAnalysis.push(courseAnalysisData);
     }
 
     return {
