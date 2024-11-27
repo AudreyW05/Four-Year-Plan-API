@@ -397,7 +397,7 @@ async function main() {
 
   const course46 = await prisma.course.create({
     data: {
-      code: 'Philos/Ling Analysis',
+      code: 'Arts and Humanities 1',
       units: 5,
       category: 'ges',
     },
@@ -405,7 +405,7 @@ async function main() {
 
   const course47 = await prisma.course.create({
     data: {
-      code: 'VAPA',
+      code: 'Arts and Humanities 2',
       units: 5,
       category: 'ges',
     },
@@ -413,21 +413,13 @@ async function main() {
 
   const course48 = await prisma.course.create({
     data: {
-      code: 'Historical Analysis',
-      units: 5,
-      category: 'ges',
-    },
-  });
-
-  const course49 = await prisma.course.create({
-    data: {
       code: 'Social Analysis',
       units: 5,
       category: 'ges',
     },
   });
 
-  const course50 = await prisma.course.create({
+  const course49 = await prisma.course.create({
     data: {
       code: 'Life Science',
       units: 5,
@@ -613,23 +605,19 @@ async function main() {
       },
       {
         degreeName: degree1.name,
-        courseCode: course46.code, // phil/ling
+        courseCode: course46.code, // arts/hum 1
       },
       {
         degreeName: degree1.name,
-        courseCode: course47.code, // vapa
+        courseCode: course47.code, // arts/hum 2
       },
       {
         degreeName: degree1.name,
-        courseCode: course48.code, // hist
+        courseCode: course48.code, // soc
       },
       {
         degreeName: degree1.name,
-        courseCode: course49.code, // soc
-      },
-      {
-        degreeName: degree1.name,
-        courseCode: course50.code, // ls
+        courseCode: course49.code, // ls
       },
 
       // ------------ CSE ------------- //
@@ -794,24 +782,20 @@ async function main() {
         courseCode: course45.code, // lit/cult
       },
       {
-        degreeName: degree2.name,
-        courseCode: course46.code, // phil/ling
+        degreeName: degree1.name,
+        courseCode: course46.code, // arts/hum 1
       },
       {
-        degreeName: degree2.name,
-        courseCode: course47.code, // vapa
+        degreeName: degree1.name,
+        courseCode: course47.code, // arts/hum 2
       },
       {
-        degreeName: degree2.name,
-        courseCode: course48.code, // hist
+        degreeName: degree1.name,
+        courseCode: course48.code, // soc
       },
       {
-        degreeName: degree2.name,
-        courseCode: course49.code, // soc
-      },
-      {
-        degreeName: degree2.name,
-        courseCode: course50.code, // ls
+        degreeName: degree1.name,
+        courseCode: course49.code, // ls
       },
     ],
   });
