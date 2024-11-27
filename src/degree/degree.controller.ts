@@ -20,34 +20,39 @@ export class DegreeController {
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createDegreeDto: CreateDegreeDto) {
-    return this.degreeService.create(createDegreeDto);
+  async create(@Body() createDegreeDto: CreateDegreeDto) {
+    const degree = await this.degreeService.create(createDegreeDto);
+    return { data: degree };
   }
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.degreeService.findAll();
+  async findAll() {
+    const all = await this.degreeService.findAll();
+    return { data: all };
   }
 
   @UseGuards(AuthGuard)
   @Get(':name')
-  findOne(@Param('name') name: string) {
-    return this.degreeService.findOne(name);
+  async findOne(@Param('name') name: string) {
+    const one = await this.degreeService.findOne(name);
+    return { data: one };
   }
 
   @UseGuards(AuthGuard)
   @Put(':name')
-  update(
+  async update(
     @Param('name') name: string,
     @Body() updateDegreeDto: UpdateDegreeDto,
   ) {
-    return this.degreeService.update(name, updateDegreeDto);
+    const degree = await this.degreeService.update(name, updateDegreeDto);
+    return { data: degree };
   }
 
   @UseGuards(AuthGuard)
   @Delete(':name')
-  remove(@Param('name') name: string) {
-    return this.degreeService.remove(name);
+  async remove(@Param('name') name: string) {
+    const degree = await this.degreeService.remove(name);
+    return { data: degree };
   }
 }

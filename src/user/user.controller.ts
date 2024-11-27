@@ -25,8 +25,9 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    const user = await this.userService.create(createUserDto);
+    return { data: user };
   }
 
   /**
@@ -35,11 +36,12 @@ export class UserController {
    * @param addCourseDto - Course code to add
    */
   @Post(':id/add-course')
-  addCourseToUser(
+  async addCourseToUser(
     @Param('id', ParseIntPipe) id: number,
     @Body() addCourseDto: AddCourseDto,
   ) {
-    return this.userService.addCourseToUser(id, addCourseDto.courseCode, addCourseDto.year, addCourseDto.quarter);
+    const course = await this.userService.addCourseToUser(id, addCourseDto.courseCode, addCourseDto.year, addCourseDto.quarter);
+    return { data: course };
   }
 
   /**
@@ -48,11 +50,12 @@ export class UserController {
    * @param addCourseDto - Course code to add
    */
   @Delete(':id/delete-course')
-  deleteCourseToUser(
+  async deleteCourseToUser(
     @Param('id', ParseIntPipe) id: number,
     @Body() deleteCourseDto: DeleteCourseDto,
   ) {
-    return this.userService.deleteCourseToUser(id, deleteCourseDto.courseCode);
+    const course = await this.userService.deleteCourseToUser(id, deleteCourseDto.courseCode);
+    return { data: course };
   }
 
   /**
@@ -60,8 +63,9 @@ export class UserController {
    */
   @UseGuards(AuthGuard)
   @Get('getSelf')
-  getSelf(@Request() req): Promise<UserWithCourseAnalysis[]> {
-    return this.userService.getSelf(req.user);
+  async getSelf(@Request() req) {
+    const self = await this.userService.getSelf(req.user);
+    return { data: self };
   }
 
   /**
@@ -69,8 +73,9 @@ export class UserController {
    */
   @UseGuards(AuthGuard)
   @Get()
-  findAll(): Promise<UserWithCourseAnalysis[]> {
-    return this.userService.findAll();
+  async findAll() {
+    const all = await this.userService.findAll();
+    return { data: all };
   }
 
   /**
@@ -79,24 +84,27 @@ export class UserController {
    */
   @UseGuards(AuthGuard)
   @Get(':id')
-  findOne(
+  async findOne(
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<UserWithCourseAnalysis> {
-    return this.userService.findOne(id);
+  ) {
+    const one = await this.userService.findOne(id);
+    return { data: one };
   }
 
   @UseGuards(AuthGuard)
   @Put(':id')
-  update(
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return this.userService.update(id, updateUserDto);
+    const user = await this.userService.update(id, updateUserDto);
+    return { data: user };
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.remove(id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    const user = await this.userService.remove(id);
+    return { data: user };
   }
 }
